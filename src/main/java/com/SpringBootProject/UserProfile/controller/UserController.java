@@ -6,10 +6,12 @@ import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -30,12 +32,18 @@ public class UserController {
     }
 
     @GetMapping(path="/users/getuserById/{id}")
-    public User getuserByid(@PathVariable int id){
+
+//    EntityModel --
+//    WebMVCLinkBuilder -- to add link
+    public EntityModel<User> getuserByid(@PathVariable int id){
         User getUser= UserDaoService.findUserById(id);
         if(getUser==null){
             throw new UserNotFoundException("id: "+id);
         }
-        return getUser;
+        EntityModel<User> entityModel = EntityModel.of(getUser); //creating an entityModel for getuser.
+        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).getAllUsers());
+        entityModel.add(link.withRel("all-users"));
+        return entityModel;
     }
     @DeleteMapping(path="/users/getuserById/{id}")
     public void deleteUserById(@PathVariable int id){
