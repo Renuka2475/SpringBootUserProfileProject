@@ -1,17 +1,35 @@
 package com.SpringBootProject.UserProfile.bean;
 
+import com.SpringBootProject.UserProfile.controller.UserJPAController;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity (name="user_details")
 public class User {
-    private int id;
+    protected User(){
 
+    }
+
+    @Id
+    @GeneratedValue
+    private int id;
+    @JsonProperty("User_name")  // To customize field attributes
     @Size(min=2, message = "Name should have atleat 2 characters..")
     private String name;
+
+    @JsonProperty("Birth_Date")
     @Past(message = "Brith date cannot be future date")
     private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
 
     public User(int id, String name, LocalDate birthDate) {
         this.id = id;
@@ -41,6 +59,14 @@ public class User {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

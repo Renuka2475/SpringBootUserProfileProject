@@ -1,6 +1,5 @@
-package com.SpringBootProject.UserProfile.errorEntities;
+package com.SpringBootProject.errorEntites;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ErrorDetails {
