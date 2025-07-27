@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity (name="user_details")
 public class User {
-    protected User(){
+    protected User() {
 
     }
 
@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue
     private int id;
     @JsonProperty("User_name")  // To customize field attributes
-    @Size(min=2, message = "Name should have atleat 2 characters..")
+    @Size(min = 2, message = "Name should have atleat 2 characters..")
     private String name;
 
     @JsonProperty("Birth_Date")
